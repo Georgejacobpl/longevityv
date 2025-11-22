@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Supplement Analyzer</title>
+</head>
+<body>
+    <h1>💊 Supplement Video Analyzer</h1>
+    <input type="text" id="textInput" placeholder="Enter video title...">
+    <button onclick="analyze()">Analyze</button>
+    <div id="result"></div>
+
+    <script>
+        async function analyze() {
+            const text = document.getElementById('textInput').value;
+            const response = await fetch('/predict', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({text: text})
+            });
+            const data = await response.json();
+            document.getElementById('result').innerHTML = `
+                <h3>Result: ${data.sentiment}</h3>
+                <p>Confidence: ${(data.confidence * 100).toFixed(1)}%</p>
+            `;
+        }
+    </script>
+</body>
+</html>
